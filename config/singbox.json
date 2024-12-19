@@ -1,0 +1,62 @@
+{
+		"log": {
+			"level": "info",
+			"timestamp": true
+		},
+		"dns": {
+			"servers": [
+				{
+					"tag": "dns-remote",
+					"address": "tcp://8.8.8.8",
+					"detour": "proxy"
+				},
+				{
+					"tag": "dns-local",
+					"address": "local",
+					"detour": "direct"
+				}
+			],
+			"rules": [
+				{
+					"domain": "cn",
+					"server": "dns-local"
+				}
+			]
+		},
+		"inbounds": [
+			{
+				"type": "mixed",
+				"tag": "mixed-in",
+				"listen": "127.0.0.1",
+				"listen_port": 1080
+			}
+		],
+		"outbounds": [
+			{
+				"type": "shadowsocks",
+				"tag": "proxy",
+				"server": "185.242.86.156",
+				"server_port": 54170,
+				"method": "chacha20-ietf-poly1305",
+			"password": "36ZCHeabUSfKjfQEvJ4HDV"
+			},
+			{
+				"type": "direct",
+				"tag": "direct"
+			},
+			{
+				"type": "block",
+				"tag": "block"
+			}
+		],
+		"route": {
+			"rules": [
+				{
+					"domain": "cn",
+					"geoip": "cn",
+					"outbound": "direct"
+				}
+			],
+			"final": "proxy"
+		}
+	}
